@@ -6,3 +6,5 @@ pip install torch==2.1.1 torchvision==0.16.1 torchaudio==2.1.1 --index-url https
 pip install auto-gptq==0.6.0
 pip install tokenizers==0.13.3
 pip install --upgrade transformers accelerate
+pip install nbdime
+nbdime config-git --enable --global

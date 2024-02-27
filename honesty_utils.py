@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from utils import get_activations_for_paired_statements, get_directions, get_accs_for_pairs
+from utils import get_activations_for_paired_statements, get_directions, get_accs_for_pairs, Detector
 
 class HonestyExtractor():
     
@@ -16,6 +16,18 @@ class HonestyExtractor():
         direction_info = get_directions(train_act_pairs)
         self.direction_info = direction_info
         return self.direction_info
+
+
+class LieDetector(Detector):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def detect_lie(self, layers_to_use=range(32-25, 32-9)):
+        layer_avg = self.all_projs[layers_to_use, :].mean(axis=0)
+        layer_avg = layer_avg.detach().cpu().numpy()
+        layer_avg = layer_avg.reshape(1, -1)
+        return layer_avg
         
 
 def prepare_statement_pairs(tokenizer, user_tag, assistant_tag):
